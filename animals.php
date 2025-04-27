@@ -11,13 +11,15 @@
 <body>
     <header>
         <h2 class="logo">
-            <img src="accueil/logo.png" alt="Logo">
+            <a href="accueil.php">
+                <img src="accueil/logo.png" alt="Logo EducatifEnfant">
+            </a>
         </h2>
-        <nav class="navigation">
-            <a href="process-login.php">Accueil</a>
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Contact</a>
+        <nav class ="navigation">
+            <a href="alphabet.php">Alphabet</a>
+            <a href="colors.php">Colors</a>
+            <a href="numbers.php">Numbers</a>
+            <a href="animals.php">Animals</a>
             <button class="btnLogin-popup">Login</button>
         </nav>
     </header>

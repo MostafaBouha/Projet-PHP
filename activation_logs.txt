@@ -1,0 +1,10 @@
+Nouvelle inscription:
+Email: mbbou12345678@gmail.com
+Code: 689a8786176ff8a613bcb8fa6d6fad38
+Lien: http://localhost/projet/activate.php?code=689a8786176ff8a613bcb8fa6d6fad38
+
+Nouvelle inscription:
+Email: mbbou12345@gmail.com
+Code: c5b8ddb5431a3f6fb5b49bb7fbfbb687
+Lien: http://localhost/projet/activate.php?code=c5b8ddb5431a3f6fb5b49bb7fbfbb687
+

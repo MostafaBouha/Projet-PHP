@@ -1,6 +1,6 @@
 const wrapper = document.querySelector('.wrapper');
 const loginForm = document.querySelector('.form-box.login');
-const registerForm = document.querySelector('.form-box.Register');
+const registerForm = document.querySelector('.form-box.register');
 const loginLink = document.querySelector('.login-link');
 const registerLink = document.querySelector('.register-link');
 const btnPopup = document.querySelector('.btnLogin-popup');
@@ -11,11 +11,13 @@ registerForm.style.display = 'none';
 registerLink.addEventListener('click', () => {
     registerForm.style.display = 'block'; 
     loginForm.style.display = 'none'; 
+    wrapper.classList.add('active'); // AJOUTE CECI
 });
 
 loginLink.addEventListener('click', () => {
     loginForm.style.display = 'block'; 
     registerForm.style.display = 'none'; 
+    wrapper.classList.remove('active'); // AJOUTE CECI
 });
 
 btnPopup.addEventListener('click', () => {

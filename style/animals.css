@@ -26,8 +26,27 @@ body {
     align-items: center;
 }
 
+.logo a {
+    display: inline-block; /* Permet au lien de bien contenir l'image */
+    transition: transform 0.3s ease; /* Animation au survol */
+}
 
+.logo a:hover {
+    transform: scale(1.05); /* Légère augmentation de taille au survol */
+}
 
+.logo a img {
+    width: 70px;
+    height: auto;
+    border-radius: 50%; /* Optionnel - rend le logo rond */
+    border: 2px solid transparent; /* Préparation pour l'effet hover */
+    transition: all 0.3s ease; /* Transition fluide */
+}
+
+.logo a:hover img {
+    border-color: white; /* Bordure blanche au survol */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Effet de halo */
+}
 .logo img {
     width: 70px;
     height: auto;
