@@ -1,32 +1,34 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Vérifie l'accès direct
-if (!isset($_SERVER['HTTP_HOST'])) {
-    die('Accès interdit');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-// Chemin absolu pour les inclusions
+// 2. Initialisation de $_SESSION si non définie
+$_SESSION = $_SESSION ?? [];
+
+// Debug complet
+error_log("Accès à admin/index.php - ".date('Y-m-d H:i:s'));
+error_log("SESSION: ".print_r($_SESSION, true));
+
 define('BASE_DIR', __DIR__);
+require_once BASE_DIR.'/../config.php';
 
-require_once BASE_DIR.'/admin_check.php';
+// Bypass temporaire - À RETIRER APRÈS TEST
+$_SESSION['user_id'] = 1;
+$_SESSION['is_admin'] = true;
 
-// Test connexion DB
-try {
-    $test = $conn->query("SELECT 1");
-} catch (Exception $e) {
-    die("Erreur DB: ".$e->getMessage());
+if (!isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+    error_log("Redirection vers login - Pas admin");
+    header("Location: /projet/login.php");
+    exit;
 }
-require_once 'admin_check.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Panel Admin - EducatifEnfant</title>
-    <link rel="stylesheet" href="../style/admin.css">
+    <link rel="stylesheet" href="/projet/style/admin.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>

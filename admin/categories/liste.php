@@ -1,4 +1,17 @@
 <?php
+require_once __DIR__.'/../bootstrap.php';
+
+// Vérification sécurité
+if (!defined('ADMIN_ROOT')) {
+    die('Accès non autorisé');
+}
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Ligne 2 corrigée - Chemin absolu
+require_once __DIR__.'/../../admin_check.php';
 require_once '../../admin_check.php';
 
 $search = $_GET['search'] ?? '';
