@@ -37,8 +37,6 @@
         <a href="manage_colors.php">Gérer les Couleurs</a>
         <a href="manage_numbers.php">Gérer les Chiffres</a>
         <a href="manage_animals.php">Gérer les Animaux</a>
-        <a href="manage_videos.php">Gérer les Vidéos</a>
-        <a href="manage_sounds.php">Gérer les Sons</a>
     </div>
     
     <div class="content">
