@@ -1,6 +1,7 @@
 <?php
-// Configuration de l'administration
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Vérification de l'authentification
 if (!isset($_SESSION['admin_logged_in'])) {
