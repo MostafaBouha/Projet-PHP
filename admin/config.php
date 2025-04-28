@@ -1,61 +1,42 @@
 <?php
-// Active l'affichage des erreurs
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// Configuration de l'administration
+session_start();
 
-// Connexion DB
-$conn = new mysqli("localhost", "root", "", "educatif_enfant");
-if ($conn->connect_error) {
-    die("Erreur DB: ".$conn->connect_error);
+// Vérification de l'authentification
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: login.php");
+    exit();
 }
 
-// Configuration des sessions
-session_start([
-    'cookie_lifetime' => 86400,
-    'cookie_secure'   => false, // Mettez à true en production avec HTTPS
-    'cookie_httponly' => true,
-]);
+// Configuration de la base de données
+$db_host = 'localhost';
+$db_user = 'root';
+$db_pass = '';
+$db_name = 'educatif_enfant';
 
-// Configuration pour les uploads
-define('MAX_FILE_SIZE', 10 * 1024 * 1024); // 10MB
-define('ALLOWED_IMAGE_TYPES', ['jpg', 'jpeg', 'png', 'gif']);
-define('ALLOWED_AUDIO_TYPES', ['mp3', 'wav', 'ogg']);
-define('ALLOWED_VIDEO_TYPES', ['mp4', 'webm']);
-define('UPLOAD_DIR', __DIR__ . '/uploads/');
-
-// Fonction de validation des fichiers
-function validateUploadedFile($file, $type) {
-    $fileType = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+// Connexion à la base de données
+try {
+    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
     
-    if ($file['size'] > MAX_FILE_SIZE) {
-        return ['success' => false, 'message' => 'Fichier trop volumineux (max 10MB)'];
+    // Vérifier la connexion
+    if ($conn->connect_error) {
+        throw new Exception("Échec de la connexion à la base de données: " . $conn->connect_error);
     }
     
-    switch ($type) {
-        case 'image':
-            if (!in_array($fileType, ALLOWED_IMAGE_TYPES)) {
-                return ['success' => false, 'message' => 'Type d\'image non autorisé (jpg, jpeg, png, gif)'];
-            }
-            break;
-        case 'audio':
-            if (!in_array($fileType, ALLOWED_AUDIO_TYPES)) {
-                return ['success' => false, 'message' => 'Type d\'audio non autorisé (mp3, wav, ogg)'];
-            }
-            break;
-        case 'video':
-            if (!in_array($fileType, ALLOWED_VIDEO_TYPES)) {
-                return ['success' => false, 'message' => 'Type de vidéo non autorisé (mp4, webm)'];
-            }
-            break;
-        default:
-            return ['success' => false, 'message' => 'Type de média non reconnu'];
-    }
+    // Définir l'encodage
+    $conn->set_charset("utf8mb4");
     
-    return ['success' => true];
+} catch (Exception $e) {
+    die("Erreur de connexion: " . $e->getMessage());
 }
-
-// Fonction de sécurisation des entrées
-function secureInput($data) {
+$required_tables = ['images', 'videos', 'sounds', 'admins'];
+foreach ($required_tables as $table) {
+    if (!$conn->query("SELECT 1 FROM $table LIMIT 1")) {
+        die("La table $table n'existe pas. Veuillez importer la structure de la base de données.");
+    }
+}
+// Fonction de nettoyage des entrées
+function cleanInput($data) {
     return htmlspecialchars(strip_tags(trim($data)));
 }
 ?>

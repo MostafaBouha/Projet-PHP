@@ -1,110 +1,47 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// 2. Initialisation de $_SESSION si non définie
-$_SESSION = $_SESSION ?? [];
-
-// Debug complet
-error_log("Accès à admin/index.php - ".date('Y-m-d H:i:s'));
-error_log("SESSION: ".print_r($_SESSION, true));
-
-define('BASE_DIR', __DIR__);
-require_once BASE_DIR.'/../config.php';
-
-// Bypass temporaire - À RETIRER APRÈS TEST
-$_SESSION['user_id'] = 1;
-$_SESSION['is_admin'] = true;
-
-if (!isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
-    error_log("Redirection vers login - Pas admin");
-    header("Location: /projet/login.php");
-    exit;
-}
-?>
+<?php require_once 'config.php'; ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Panel Admin - EducatifEnfant</title>
-    <link rel="stylesheet" href="/projet/style/admin.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Tableau de bord Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .header { background: #333; color: white; padding: 10px 20px; display: flex; justify-content: space-between; }
+        .sidebar { width: 200px; background: #444; color: white; height: 100vh; position: fixed; }
+        .sidebar a { display: block; color: white; padding: 15px; text-decoration: none; }
+        .sidebar a:hover { background: #555; }
+        .content { margin-left: 200px; padding: 20px; }
+        .card { background: white; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
+        .logout { color: white; text-decoration: none; }
+    </style>
 </head>
 <body>
-    <div class="admin-container">
-        <?php include 'admin_sidebar.php'; ?>
+    <div class="header">
+        <h2>Tableau de bord Admin</h2>
+        <a href="logout.php" class="logout">Déconnexion</a>
+    </div>
+    
+    <div class="sidebar">
+        <a href="index.php">Accueil</a>
+        <a href="manage_alphabet.php">Gérer l'Alphabet</a>
+        <a href="manage_colors.php">Gérer les Couleurs</a>
+        <a href="manage_numbers.php">Gérer les Chiffres</a>
+        <a href="manage_animals.php">Gérer les Animaux</a>
+        <a href="manage_videos.php">Gérer les Vidéos</a>
+        <a href="manage_sounds.php">Gérer les Sons</a>
+    </div>
+    
+    <div class="content">
+        <div class="card">
+            <h2>Bienvenue dans l'interface d'administration</h2>
+            <p>Utilisez le menu de gauche pour gérer les différentes sections du site.</p>
+        </div>
         
-        <main class="admin-main">
-            <h1>Tableau de Bord Administrateur</h1>
-            
-            <div class="admin-stats">
-                <div class="stat-card">
-                    <h3>Catégories</h3>
-                    <?php
-                    $result = $conn->query("SELECT COUNT(*) FROM categories");
-                    $count = $result->fetch_row()[0];
-                    ?>
-                    <p><?= $count ?> catégories</p>
-                    <a href="categories/liste.php" class="btn">Gérer</a>
-                </div>
-                
-                <div class="stat-card">
-                    <h3>Éléments</h3>
-                    <?php
-                    $result = $conn->query("SELECT COUNT(*) FROM elements");
-                    $count = $result->fetch_row()[0];
-                    ?>
-                    <p><?= $count ?> éléments</p>
-                    <a href="elements/liste.php" class="btn">Gérer</a>
-                </div>
-                
-                <div class="stat-card">
-                    <h3>Médias</h3>
-                    <?php
-                    $result = $conn->query("SELECT COUNT(*) FROM medias");
-                    $count = $result->fetch_row()[0];
-                    ?>
-                    <p><?= $count ?> médias</p>
-                    <a href="medias/gestion.php" class="btn">Gérer</a>
-                </div>
-            </div>
-            
-            <div class="recent-activity">
-                <h2>Activité récente</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Action</th>
-                            <th>Détails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $result = $conn->query("
-                            (SELECT 'category' as type, nom as name, date_creation as date FROM categories ORDER BY date_creation DESC LIMIT 3)
-                            UNION
-                            (SELECT 'element' as type, titre as name, date_creation as date FROM elements ORDER BY date_creation DESC LIMIT 3)
-                            UNION
-                            (SELECT 'media' as type, nom_fichier as name, date_upload as date FROM medias ORDER BY date_upload DESC LIMIT 3)
-                            ORDER BY date DESC LIMIT 5
-                        ");
-                        
-                        while ($row = $result->fetch_assoc()):
-                            $type = $row['type'] === 'category' ? 'Catégorie' : 
-                                   ($row['type'] === 'element' ? 'Élément' : 'Média');
-                        ?>
-                        <tr>
-                            <td><?= date('d/m/Y H:i', strtotime($row['date'])) ?></td>
-                            <td><?= $type ?></td>
-                            <td><?= secureInput($row['name']) ?></td>
-                        </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            </div>
-        </main>
+        <div class="card">
+            <h3>Statistiques rapides</h3>
+            <p>Nombre d'images: <?= mysqli_num_rows(mysqli_query($conn, "SELECT * FROM images")) ?></p>
+            <p>Nombre de vidéos: <?= mysqli_num_rows(mysqli_query($conn, "SELECT * FROM videos")) ?></p>
+            <p>Nombre de sons: <?= mysqli_num_rows(mysqli_query($conn, "SELECT * FROM sounds")) ?></p>
+        </div>
     </div>
 </body>
 </html>
