@@ -8,3 +8,18 @@ Email: mbbou12345@gmail.com
 Code: c5b8ddb5431a3f6fb5b49bb7fbfbb687
 Lien: http://localhost/projet/activate.php?code=c5b8ddb5431a3f6fb5b49bb7fbfbb687
 
+Nouvelle inscription:
+Email: mbbou12345678@gmail.com
+Code: 92dabef9bf674e408c83896f397560c7
+Lien: http://localhost/projet/activate.php?code=92dabef9bf674e408c83896f397560c7
+
+Nouvelle inscription:
+Email: mbbou12345678@gmail.com
+Code: d7d55085b81cf475ba3c59a354bc0ccd
+Lien: http://localhost/projet/activate.php?code=d7d55085b81cf475ba3c59a354bc0ccd
+
+Nouvelle inscription:
+Email: mbbou12345@gmail.com
+Code: 4f74c45b15a537f1ac74ccc2b14cb248
+Lien: http://localhost/projet/activate.php?code=4f74c45b15a537f1ac74ccc2b14cb248
+
