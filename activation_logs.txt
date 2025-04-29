@@ -23,3 +23,18 @@ Email: mbbou12345@gmail.com
 Code: 4f74c45b15a537f1ac74ccc2b14cb248
 Lien: http://localhost/projet/activate.php?code=4f74c45b15a537f1ac74ccc2b14cb248
 
+Nouvelle inscription:
+Email: mostafabouhamdi13@gmail.com
+Code: e2c009b8e82a81bcae5d3d2eeeb50a2d
+Lien: http://localhost/projet/activate.php?code=e2c009b8e82a81bcae5d3d2eeeb50a2d
+
+Nouvelle inscription:
+Email: mbbou12345678@gmail.com
+Code: 724989459f635148fa8d14822992939c
+Lien: http://localhost/projet/activate.php?code=724989459f635148fa8d14822992939c
+
+Nouvelle inscription:
+Email: mostafabouhamidi13@gmail.com
+Code: f691e6a107b3f2f87274f868ae32c947
+Lien: http://localhost/projet/activate.php?code=f691e6a107b3f2f87274f868ae32c947
+

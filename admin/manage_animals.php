@@ -85,11 +85,11 @@
                 </thead>
                 <tbody>
                     <?php
-                    $animals = $conn->query("SELECT * FROM animals ORDER BY animal_name");
+                    $animals = $conn->query("SELECT * FROM animals ORDER BY name");
                     while($animal = $animals->fetch_assoc()):
                     ?>
                     <tr>
-                        <td><?= htmlspecialchars($animal['animal_name']) ?></td>
+                        <td><?= htmlspecialchars($animal['name']) ?></td>
                         <td><?= htmlspecialchars($animal['category']) ?></td>
                         <td><img src="../uploads/animals/<?= $animal['filename'] ?>" class="animal-image"></td>
                         <td>

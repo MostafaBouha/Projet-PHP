@@ -1,3 +1,14 @@
+<?php
+require_once 'config.php';
+
+$animals = $conn->query("
+    SELECT *, 
+    CONCAT('".BASE_URL."/uploads/animals/', filename) as image_url,
+    CONCAT('".BASE_URL."/uploads/animals/sounds/', sound_filename) as sound_url
+    FROM animals 
+    ORDER BY name
+");
+?>
 <!DOCTYPE html>
 <html lang="fr"> 
 <head>
@@ -26,7 +37,6 @@
     <section class="animals-section">
     <h1 class="section-title">Découvrir les animaux</h1>
     <p class="section-description">Explorez le monde des animaux avec des interactions amusantes !</p>
-
     <!-- Galerie d'images interactives -->
     <div class="animals-gallery">
         <div class="animal-card">
