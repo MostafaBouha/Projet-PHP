@@ -4,7 +4,6 @@
 <head>
     <title>Gérer les Couleurs</title>
     <style>
-        /* Même style que manage_alphabet.php */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
         .header { background: #333; color: white; padding: 10px 20px; display: flex; justify-content: space-between; }
         .sidebar { width: 200px; background: #444; color: white; height: 100vh; position: fixed; }
@@ -21,9 +20,9 @@
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; }
         input, textarea, select { width: 100%; padding: 8px; box-sizing: border-box; }
-        /* Styles spécifiques pour les couleurs */
         .color-preview { display: inline-block; width: 20px; height: 20px; border: 1px solid #ddd; margin-right: 5px; vertical-align: middle; }
         input[type="color"] { width: 50px; height: 30px; padding: 0; vertical-align: middle; }
+        .color-image { max-height: 50px; max-width: 80px; }
     </style>
 </head>
 <body>
@@ -38,7 +37,6 @@
         <a href="manage_colors.php">Gérer les Couleurs</a>
         <a href="manage_numbers.php">Gérer les Chiffres</a>
         <a href="manage_animals.php">Gérer les Animaux</a>
-
     </div>
     
     <div class="content">
@@ -63,7 +61,7 @@
                 </div>
                 <div class="form-group">
                     <label>Description:</label>
-                    <textarea name="description"></textarea>
+                    <textarea name="description" rows="3"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Enregistrer</button>
             </form>
@@ -74,24 +72,21 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Nom</th>
                         <th>Couleur</th>
-                        <th>Code</th>
                         <th>Image</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $colors = $conn->query("SELECT * FROM color_images ORDER BY color_name");
+                    $colors = $conn->query("SELECT * FROM colors ORDER BY name");
                     while($color = $colors->fetch_assoc()):
                     ?>
                     <tr>
-                        <td>
-                            <span class="color-preview" style="background:<?= $color['hex_code'] ?>"></span>
-                            <?= htmlspecialchars($color['color_name']) ?>
-                        </td>
-                        <td><?= $color['hex_code'] ?></td>
-                        <td><img src="../uploads/colors/<?= $color['filename'] ?>" height="50"></td>
+                        <td><?= htmlspecialchars($color['name']) ?></td>
+                        <td><span class="color-preview" style="background:<?= $color['hex_code'] ?>"></span> <?= $color['hex_code'] ?></td>
+                        <td><img src="../uploads/colors/<?= $color['filename'] ?>" class="color-image"></td>
                         <td>
                             <a href="edit_color.php?id=<?= $color['id'] ?>" class="btn btn-primary">Modifier</a>
                             <a href="delete_color.php?id=<?= $color['id'] ?>" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</a>

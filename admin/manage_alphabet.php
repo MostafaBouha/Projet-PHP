@@ -4,7 +4,6 @@
 <head>
     <title>Gérer l'Alphabet</title>
     <style>
-        /* Même style que index.php */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
         .header { background: #333; color: white; padding: 10px 20px; display: flex; justify-content: space-between; }
         .sidebar { width: 200px; background: #444; color: white; height: 100vh; position: fixed; }
@@ -21,6 +20,7 @@
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; }
         input, textarea, select { width: 100%; padding: 8px; box-sizing: border-box; }
+        .letter-image { max-height: 50px; max-width: 50px; }
     </style>
 </head>
 <body>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="form-group">
                     <label>Description:</label>
-                    <textarea name="description"></textarea>
+                    <textarea name="description" rows="3"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Enregistrer</button>
             </form>
@@ -73,15 +73,15 @@
                 </thead>
                 <tbody>
                     <?php
-                    $result = $conn->query("SELECT * FROM alphabet ORDER BY letter");
-                    while ($row = $result->fetch_assoc()):
+                    $letters = $conn->query("SELECT * FROM alphabet ORDER BY letter");
+                    while($letter = $letters->fetch_assoc()):
                     ?>
                     <tr>
-                        <td><?= htmlspecialchars($row['letter']) ?></td>
-                        <td><img src="../images_alphabet/<?= htmlspecialchars($row['image']) ?>" height="50"></td>
+                        <td><?= htmlspecialchars($letter['letter']) ?></td>
+                        <td><img src="../uploads/alphabet/<?= $letter['filename'] ?>" class="letter-image"></td>
                         <td>
-                            <a href="edit_alphabet.php?id=<?= $row['id'] ?>" class="btn btn-primary">Modifier</a>
-                            <a href="delete_alphabet.php?id=<?= $row['id'] ?>" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</a>
+                            <a href="edit_alphabet.php?id=<?= $letter['id'] ?>" class="btn btn-primary">Modifier</a>
+                            <a href="delete_alphabet.php?id=<?= $letter['id'] ?>" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</a>
                         </td>
                     </tr>
                     <?php endwhile; ?>

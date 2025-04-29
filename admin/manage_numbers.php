@@ -4,7 +4,23 @@
 <head>
     <title>Gérer les Chiffres</title>
     <style>
-        /* [Conservez le même style que manage_animals.php] */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .header { background: #333; color: white; padding: 10px 20px; display: flex; justify-content: space-between; }
+        .sidebar { width: 200px; background: #444; color: white; height: 100vh; position: fixed; }
+        .sidebar a { display: block; color: white; padding: 15px; text-decoration: none; }
+        .sidebar a:hover { background: #555; }
+        .content { margin-left: 200px; padding: 20px; }
+        .card { background: white; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background: #f5f5f5; }
+        .btn { padding: 5px 10px; text-decoration: none; border-radius: 3px; }
+        .btn-primary { background: #4CAF50; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, textarea, select { width: 100%; padding: 8px; box-sizing: border-box; }
+        .number-image { max-height: 50px; max-width: 50px; }
     </style>
 </head>
 <body>
@@ -14,7 +30,11 @@
     </div>
     
     <div class="sidebar">
-        <!-- [Menu identique à manage_animals.php] -->
+        <a href="index.php">Accueil</a>
+        <a href="manage_alphabet.php">Gérer l'Alphabet</a>
+        <a href="manage_colors.php">Gérer les Couleurs</a>
+        <a href="manage_numbers.php">Gérer les Chiffres</a>
+        <a href="manage_animals.php">Gérer les Animaux</a>
     </div>
     
     <div class="content">
@@ -39,7 +59,7 @@
                 </div>
                 <div class="form-group">
                     <label>Description:</label>
-                    <textarea name="description"></textarea>
+                    <textarea name="description" rows="3"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Enregistrer</button>
             </form>
@@ -62,9 +82,9 @@
                     while($number = $numbers->fetch_assoc()):
                     ?>
                     <tr>
-                        <td><?= htmlspecialchars($number['number'] ?? '') ?></td>
-                        <td><?= htmlspecialchars($number['number_name'] ?? 'Non spécifié') ?></td>
-                        <td><img src="../uploads/numbers/<?= $number['filename'] ?>" height="50"></td>
+                        <td><?= htmlspecialchars($number['number']) ?></td>
+                        <td><?= htmlspecialchars($number['number_name']) ?></td>
+                        <td><img src="../uploads/numbers/<?= $number['filename'] ?>" class="number-image"></td>
                         <td>
                             <a href="edit_number.php?id=<?= $number['id'] ?>" class="btn btn-primary">Modifier</a>
                             <a href="delete_number.php?id=<?= $number['id'] ?>" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</a>
