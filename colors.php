@@ -105,25 +105,28 @@
         <h2 class="nos-services">Jeu des Couleurs</h2>
         <p class="game-instruction">Cliquez sur une couleur pour entendre son nom !</p>
         <div class="game-container">
-            <?php
-            // Fetch colors from the database for the game
-            $sql_game = "SELECT name, hex_code, sound FROM colors ORDER BY name";
-            $result_game = $conn->query($sql_game);
+    <?php
+    $sql_game = "SELECT name, hex_code, sound FROM colors WHERE sound IS NOT NULL AND sound != '' ORDER BY name";
+    $result_game = $conn->query($sql_game);
 
-            if ($result_game->num_rows > 0) {
-                while($color_data_game = $result_game->fetch_assoc()) {
-                    $color_name = htmlspecialchars($color_data_game['name']);
-                    $hex_code = htmlspecialchars($color_data_game['hex_code']);
-                    $sound_path = htmlspecialchars($color_data_game['sound'] ?? ''); // Assuming sound_filename exists and is optional
+    if ($result_game->num_rows > 0) {
+        while($color_data_game = $result_game->fetch_assoc()) {
+            $color_name = htmlspecialchars($color_data_game['name']);
+            $hex_code = htmlspecialchars($color_data_game['hex_code']);
+            $sound_path = htmlspecialchars($color_data_game['sound']);
+            
+            echo '<button class="color-button" 
+                    data-sound="uploads/colors/sounds/'.$sound_path.'" 
+                    style="background:'.$hex_code.'">'
+                    .$color_name.
+                  '</button>';
+        }
+    } else {
+        echo "<p>Aucune couleur avec son disponible.</p>";
+    }
+    ?>
+</div>
 
-                    echo "
-                    <button class=\"color-button\" data-sound=\"uploads/colors/{$sound_path}\" style=\"background: {$hex_code};\">{$color_name}</button>";
-                }
-            } else {
-                echo "<p>Aucune couleur trouvée pour le jeu.</p>";
-            }
-            ?>
-        </div>
     </section>
 
     <!-- Footer identique à accueil.php -->
@@ -158,38 +161,32 @@
     <script>
         // Script pour les bulles de la bannière (kept as is)
         document.addEventListener('DOMContentLoaded', function() {
-            const banner = document.querySelector('.banner-bubbles');
-            for (let i = 0; i < 20; i++) {
-                const bubble = document.createElement('div');
-                bubble.className = 'bubble';
-                bubble.style.left = `${Math.random() * 100}%`;
-                bubble.style.width = `${10 + Math.random() * 30}px`;
-                bubble.style.height = bubble.style.width;\
-                bubble.style.animationDuration = `${5 + Math.random() * 10}s`;
-                bubble.style.animationDelay = `${Math.random() * 5}s`;
-                banner.appendChild(bubble);
+    const colorButtons = document.querySelectorAll('.color-button');
+    
+    colorButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const soundPath = this.getAttribute('data-sound');
+            
+            if (soundPath) {
+                // Crée un chemin absolu
+                const absolutePath = window.location.origin + '/' + soundPath;
+                const audio = new Audio(absolutePath);
+                
+                audio.play().catch(error => {
+                    console.error("Erreur de lecture:", error);
+                    // Affiche un message d'erreur plus clair
+                    alert("Impossible de jouer le son. Vérifiez que le fichier existe bien à l'emplacement: " + absolutePath);
+                });
             }
 
-            // Script pour le jeu des couleurs (adapted for dynamic buttons)
-            const colorButtons = document.querySelectorAll('.color-button');
-            colorButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const soundFile = this.getAttribute('data-sound');
-                    if (soundFile) { // Check if sound file exists
-                         const audio = new Audio(soundFile);
-                         audio.play().catch(e => console.error("Error playing sound:", e)); // Add error handling
-                    } else {
-                        console.warn("No sound file specified for this color button.");
-                    }
-
-                    // Animation au clic
-                    this.style.transform = 'scale(1.1)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                    }, 200);
-                });
-            });
+            // Animation au clic
+            this.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
         });
+    });
+});
     </script>
 </body>
 </html>
