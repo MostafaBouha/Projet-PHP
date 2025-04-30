@@ -25,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (move_uploaded_file($image_tmp, $image_path)) {
-        $stmt = $conn->prepare("INSERT INTO numbers (number, number_name, filename, sound_filename, description) VALUES (?, ?, ?, ?, ?)");
+        // Correction ici : remplacer 'filename' par 'image'
+        $stmt = $conn->prepare("INSERT INTO numbers (number, name, image, sound, description) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("issss", $number, $number_name, $image_name, $sound_name, $description);
         
         if ($stmt->execute()) {

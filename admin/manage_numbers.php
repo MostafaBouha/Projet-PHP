@@ -83,8 +83,8 @@
                     ?>
                     <tr>
                         <td><?= htmlspecialchars($number['number']) ?></td>
-                        <td><?= htmlspecialchars($number['number_name']) ?></td>
-                        <td><img src="../uploads/numbers/<?= $number['filename'] ?>" class="number-image"></td>
+                        <<td><?= htmlspecialchars($number['name']) ?></td>
+                        <td><img src="../uploads/numbers/<?= htmlspecialchars($number['image']) ?>" class="image"></td>
                         <td>
                             <a href="edit_number.php?id=<?= $number['id'] ?>" class="btn btn-primary">Modifier</a>
                             <a href="delete_number.php?id=<?= $number['id'] ?>" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</a>
