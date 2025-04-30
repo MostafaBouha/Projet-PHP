@@ -1,3 +1,7 @@
+<?php
+// Include config.php for database connection
+require_once __DIR__ . '/config.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -30,12 +34,27 @@
         <p class="section-description">Cliquez sur une image pour écouter son son ou découvrir un mot.</p>
         <div class="alphabet-container">
         <?php
-        $letters = range('A', 'Z');
-        foreach ($letters as $letter) {
-            echo "
-            <div class='letter-container'>
-                <img src='images_alphabet/{$letter}.jpg' alt='{$letter}' class='letter-image'>
-            </div>";
+        // Fetch letters from the database
+        $sql = "SELECT * FROM alphabet ORDER BY letter";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while($letter_data = $result->fetch_assoc()) {
+                $letter = htmlspecialchars($letter_data['letter']);
+                $image_path = htmlspecialchars($letter_data['filename']);
+                $sound_path = htmlspecialchars($letter_data['sound_filename'] ?? ''); // Assuming sound_filename exists and is optional
+                $description = htmlspecialchars($letter_data['description'] ?? ''); // Assuming description exists and is optional
+
+                echo "
+                <div class='letter-container' data-sound='uploads/alphabet/{$sound_path}' data-description='{$description}'>
+                    <img src='uploads/alphabet/{$image_path}' alt='{$letter}' class='letter-image'>
+                    <div class='letter-overlay'>
+                        <h3 class='letter-name'>{$letter}</h3>
+                    </div>
+                </div>";
+            }
+        } else {
+            echo "<p>Aucune lettre trouvée dans la base de données.</p>";
         }
         ?>
         </div>

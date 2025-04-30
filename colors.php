@@ -38,109 +38,45 @@
     <!-- Contenu principal -->
     <section class="services-section">
         <h2 class="nos-services">Nos Couleurs</h2>
-        
+
         <div class="service-box">
-            <!-- Rouge -->
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #FF5252;">
-                        <img src="colors/red.jpg" alt="Rouge">
-                        <h3>Rouge</h3>
-                        <p>Comme une fraise</p>
-                        <div class="service-icon"><ion-icon name="color-filter-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #FF5252;">
-                        <h3>Le Rouge</h3>
-                        <p>C'est la couleur du feu, des pommes et des coeurs.</p>
-                        <button class="btn-link">Voir plus</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Bleu -->
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #4285F4;">
-                        <img src="colors/blue.jpg" alt="Bleu">
-                        <h3>Bleu</h3>
-                        <p>Comme le ciel</p>
-                        <div class="service-icon"><ion-icon name="water-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #4285F4;">
-                        <h3>Le Bleu</h3>
-                        <p>C'est la couleur de la mer et du ciel sans nuages.</p>
-                        <button class="btn-link">Voir plus</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Vert -->
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #0F9D58;">
-                        <img src="colors/green.png" alt="Vert">
-                        <h3>Vert</h3>
-                        <p>Comme l'herbe</p>
-                        <div class="service-icon"><ion-icon name="leaf-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #0F9D58;">
-                        <h3>Le Vert</h3>
-                        <p>C'est la couleur des arbres et de la nature.</p>
-                        <button class="btn-link">Voir plus</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Jaune -->
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #FFEB3B;">
-                        <img src="colors/yellow.png" alt="Jaune">
-                        <h3>Jaune</h3>
-                        <p>Comme le soleil</p>
-                        <div class="service-icon"><ion-icon name="sunny-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #FFEB3B;">
-                        <h3>Le Jaune</h3>
-                        <p>C'est la couleur du soleil et des tournesols.</p>
-                        <button class="btn-link">Voir plus</button>
-                    </div>
-                </div>
-            </div>
+            <?php
+            require_once 'config.php'; // Ensure config is included
 
-            <!-- Orange -->
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #FF9800;">
-                        <img src="colors/orange.png" alt="Orange">
-                        <h3>Orange</h3>
-                        <p>Comme une orange</p>
-                        <div class="service-icon"><ion-icon name="nutrition-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #FF9800;">
-                        <h3>L'Orange</h3>
-                        <p>C'est la couleur des couchers de soleil et des fruits juteux.</p>
-                        <button class="btn-link">Voir plus</button>
-                    </div>
-                </div>
-            </div>
+            // Fetch colors from the database for the main display (assuming 'colors' table has relevant fields)
+            $sql_display = "SELECT * FROM colors ORDER BY name";
+            $result_display = $conn->query($sql_display);
 
-            <!-- Violet -->
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #9C27B0;">
-                        <img src="colors/purple.png" alt="Violet">
-                        <h3>Violet</h3>
-                        <p>Comme les aubergines</p>
-                        <div class="service-icon"><ion-icon name="flower-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #9C27B0;">
-                        <h3>Le Violet</h3>
-                        <p>C'est la couleur magique des rêves et de la créativité.</p>
-                        <button class="btn-link">Voir plus</button>
-                    </div>
-                </div>
-            </div>
+            if ($result_display->num_rows > 0) {
+                while($color_data_display = $result_display->fetch_assoc()) {
+                    $color_name = htmlspecialchars($color_data_display['name']);
+                    $hex_code = htmlspecialchars($color_data_display['hex_code']);
+                    $image_path = htmlspecialchars($color_data_display['filename']);
+                    $description = htmlspecialchars($color_data_display['description'] ?? '');
+                    // Assuming an icon name might be stored or derived
+                    $icon_name = 'color-filter-outline'; // Placeholder, ideally from DB
+
+                    echo "
+                    <div class=\"service\">
+                        <div class=\"service-inner\">
+                            <div class=\"service-front\" style=\"background: {$hex_code};\">
+                                <img src=\"uploads/colors/{$image_path}\" alt=\"{$color_name}\">
+                                <h3>{$color_name}</h3>
+                                <p>{$description}</p> <!-- Using description here -->
+                                <div class=\"service-icon\"><ion-icon name=\"{$icon_name}\"></ion-icon></div>
+                            </div>
+                            <div class=\"service-back\" style=\"background: {$hex_code};\">
+                                <h3>Le {$color_name}</h3>
+                                <p>{$description}</p>
+                                <button class=\"btn-link\">Voir plus</button> <!-- Link functionality needs to be added -->
+                            </div>
+                        </div>
+                    </div>";
+                }
+            } else {
+                echo "<p>Aucune couleur trouvée dans la base de données.</p>";
+            }
+            ?>
         </div>
     </section>
 
@@ -148,6 +84,7 @@
     <section class="features">
         <h2 class="nos-services">Vidéos Éducatives</h2>
         <div class="video-container">
+            <!-- Videos are currently hardcoded, could be made dynamic from a 'videos' table -->
             <div class="video-card">
                 <video controls>
                     <source src="videos_colors/colors.mp4" type="video/mp4">
@@ -168,12 +105,24 @@
         <h2 class="nos-services">Jeu des Couleurs</h2>
         <p class="game-instruction">Cliquez sur une couleur pour entendre son nom !</p>
         <div class="game-container">
-            <button class="color-button" data-sound="sounds_colors/red.mp3" style="background: #FF5252;">Rouge</button>
-            <button class="color-button" data-sound="sounds_colors/blue.mp3" style="background: #4285F4;">Bleu</button>
-            <button class="color-button" data-sound="sounds_colors/green.mp3" style="background: #0F9D58;">Vert</button>
-            <button class="color-button" data-sound="sounds_colors/yellow.mp3" style="background: #FFEB3B;">Jaune</button>
-            <button class="color-button" data-sound="sounds_colors/orange.mp3" style="background: #FF9800;">Orange</button>
-            <button class="color-button" data-sound="sounds_colors/purple.mp3" style="background: #9C27B0;">Violet</button>
+            <?php
+            // Fetch colors from the database for the game
+            $sql_game = "SELECT name, hex_code, sound_filename FROM colors ORDER BY name";
+            $result_game = $conn->query($sql_game);
+
+            if ($result_game->num_rows > 0) {
+                while($color_data_game = $result_game->fetch_assoc()) {
+                    $color_name = htmlspecialchars($color_data_game['name']);
+                    $hex_code = htmlspecialchars($color_data_game['hex_code']);
+                    $sound_path = htmlspecialchars($color_data_game['sound_filename'] ?? ''); // Assuming sound_filename exists and is optional
+
+                    echo "
+                    <button class=\"color-button\" data-sound=\"uploads/colors/{$sound_path}\" style=\"background: {$hex_code};\">{$color_name}</button>";
+                }
+            } else {
+                echo "<p>Aucune couleur trouvée pour le jeu.</p>";
+            }
+            ?>
         </div>
     </section>
 
@@ -207,7 +156,7 @@
     </footer>
 
     <script>
-        // Script pour les bulles de la bannière
+        // Script pour les bulles de la bannière (kept as is)
         document.addEventListener('DOMContentLoaded', function() {
             const banner = document.querySelector('.banner-bubbles');
             for (let i = 0; i < 20; i++) {
@@ -215,20 +164,24 @@
                 bubble.className = 'bubble';
                 bubble.style.left = `${Math.random() * 100}%`;
                 bubble.style.width = `${10 + Math.random() * 30}px`;
-                bubble.style.height = bubble.style.width;
+                bubble.style.height = bubble.style.width;\
                 bubble.style.animationDuration = `${5 + Math.random() * 10}s`;
                 bubble.style.animationDelay = `${Math.random() * 5}s`;
                 banner.appendChild(bubble);
             }
 
-            // Script pour le jeu des couleurs
+            // Script pour le jeu des couleurs (adapted for dynamic buttons)
             const colorButtons = document.querySelectorAll('.color-button');
             colorButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const soundFile = this.getAttribute('data-sound');
-                    const audio = new Audio(soundFile);
-                    audio.play();
-                    
+                    if (soundFile) { // Check if sound file exists
+                         const audio = new Audio(soundFile);
+                         audio.play().catch(e => console.error("Error playing sound:", e)); // Add error handling
+                    } else {
+                        console.warn("No sound file specified for this color button.");
+                    }
+
                     // Animation au clic
                     this.style.transform = 'scale(1.1)';
                     setTimeout(() => {
