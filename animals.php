@@ -45,7 +45,7 @@ require_once 'config.php';
                     $description = htmlspecialchars($animal_data['description'] ?? ''); // Assuming description exists and is optional
 
                     echo "
-                    <div class='animal-card' data-sound='uploads/animals/{$sound_path}' data-description='{$description}'>
+                    <div class='animal-card' data-sound='uploads/animals/sounds/{$sound_path}' data-description='{$description}'>
                         <img src='uploads/animals/{$image_path}' alt='{$animal_name}' class='animal-image'>
                         <div class='animal-overlay'>
                             <h3 class='animal-name'>{$animal_name}</h3>
@@ -97,8 +97,9 @@ require_once 'config.php';
                         $animal_name = htmlspecialchars($animal_data_game['name']);
                         $sound_path = htmlspecialchars($animal_data_game['sound_filename'] ?? ''); // Assuming sound_filename exists and is optional
 
+                        // Ligne corrigée pour générer le bouton avec le bon chemin du son
                         echo "
-                        <button class=\"animal-button\" data-sound='uploads/animals/{$sound_path}'>{$animal_name}</button>";
+                        <button class=\"animal-button\" data-sound=\"uploads/animals/sounds/{$sound_path}\">{$animal_name}</button>";
                     }
                 } else {
                     echo "<p>Aucun animal trouvé pour le jeu.</p>";
