@@ -86,7 +86,7 @@
                     <tr>
                         <td><?= htmlspecialchars($color['name']) ?></td>
                         <td><span class="color-preview" style="background:<?= $color['hex_code'] ?>"></span> <?= $color['hex_code'] ?></td>
-                        <td><img src="../uploads/colors/<?= $color['filename'] ?>" class="color-image"></td>
+                        <td><img src="../uploads/colors/<?= $color['name'] ?>" class="color-image"></td>
                         <td>
                             <a href="edit_color.php?id=<?= $color['id'] ?>" class="btn btn-primary">Modifier</a>
                             <a href="delete_color.php?id=<?= $color['id'] ?>" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</a>

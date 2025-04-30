@@ -51,7 +51,7 @@
                 while($color_data_display = $result_display->fetch_assoc()) {
                     $color_name = htmlspecialchars($color_data_display['name']);
                     $hex_code = htmlspecialchars($color_data_display['hex_code']);
-                    $image_path = htmlspecialchars($color_data_display['filename']);
+                    $image_path = htmlspecialchars($color_data_display['name']);
                     $description = htmlspecialchars($color_data_display['description'] ?? '');
                     // Assuming an icon name might be stored or derived
                     $icon_name = 'color-filter-outline'; // Placeholder, ideally from DB
@@ -107,14 +107,14 @@
         <div class="game-container">
             <?php
             // Fetch colors from the database for the game
-            $sql_game = "SELECT name, hex_code, sound_filename FROM colors ORDER BY name";
+            $sql_game = "SELECT name, hex_code, sound FROM colors ORDER BY name";
             $result_game = $conn->query($sql_game);
 
             if ($result_game->num_rows > 0) {
                 while($color_data_game = $result_game->fetch_assoc()) {
                     $color_name = htmlspecialchars($color_data_game['name']);
                     $hex_code = htmlspecialchars($color_data_game['hex_code']);
-                    $sound_path = htmlspecialchars($color_data_game['sound_filename'] ?? ''); // Assuming sound_filename exists and is optional
+                    $sound_path = htmlspecialchars($color_data_game['sound'] ?? ''); // Assuming sound_filename exists and is optional
 
                     echo "
                     <button class=\"color-button\" data-sound=\"uploads/colors/{$sound_path}\" style=\"background: {$hex_code};\">{$color_name}</button>";

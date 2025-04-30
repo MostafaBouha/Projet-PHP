@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Gestion du fichier son
     $sound_name = '';
+    $sound_path = "";
     if (!empty($_FILES['sound']['name'])) {
         $sound_name = $_FILES['sound']['name'];
         $sound_tmp = $_FILES['sound']['tmp_name'];
@@ -25,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (move_uploaded_file($image_tmp, $image_path)) {
-        $stmt = $conn->prepare("INSERT INTO colors (color_name, hex_code, filename, sound_filename, description) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO colors (name, hex_code, image, sound, description) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $color_name, $hex_code, $image_name, $sound_name, $description);
         
         if ($stmt->execute()) {
