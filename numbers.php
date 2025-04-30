@@ -10,7 +10,8 @@
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-    <!-- Header identique à accueil.php -->
+    <?php require_once 'config.php'; ?>
+    
     <header>
         <h2 class="logo">
             <a href="accueil.php">
@@ -26,7 +27,6 @@
         </nav>
     </header>
 
-    <!-- Bannière principale -->
     <section class="banner">
         <div class="banner-content">
             <h1>Apprendre les Chiffres</h1>
@@ -35,165 +35,40 @@
         <div class="banner-bubbles"></div>
     </section>
 
-    <!-- Contenu principal -->
     <section class="services-section">
         <h2 class="nos-services">Nos Chiffres</h2>
         
         <div class="service-box">
-            <!-- Chiffres de 0 à 9 -->
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #4CAF50;">
-                        <img src="numbers/0.png" alt="0">
-                        <h3>Zéro</h3>
-                        <p>Le début de tout</p>
-                        <div class="service-icon"><ion-icon name="alert-circle-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #4CAF50;">
-                        <h3>Le Zéro</h3>
-                        <p>Représente l'absence de quantité.</p>
-                    </div>
-                </div>
-            </div>
+            <?php
+            $numbers = $conn->query("SELECT * FROM numbers ORDER BY number");
+            $colors = ['#4CAF50', '#2196F3', '#FF5722', '#9C27B0', '#FFC107', '#607D8B', '#E91E63', '#795548', '#3F51B5', '#009688'];
+            $icons = ['alert-circle-outline', 'star-outline', 'git-compare-outline', 'triangle-outline', 'square-outline', 'hand-left-outline', 'dice-outline', 'happy-outline', 'infinite-outline', 'arrow-forward-outline'];
             
+            $i = 0;
+            while($number = $numbers->fetch_assoc()):
+                $color = $colors[$i % count($colors)];
+                $icon = $icons[$i % count($icons)];
+                $i++;
+            ?>
             <div class="service">
                 <div class="service-inner">
-                    <div class="service-front" style="background: #2196F3;">
-                        <img src="numbers/1.jpg" alt="1">
-                        <h3>Un</h3>
-                        <p>Le premier</p>
-                        <div class="service-icon"><ion-icon name="star-outline"></ion-icon></div>
+                    <div class="service-front" style="background: <?= $color ?>;">
+                        <img src="uploads/numbers/<?= htmlspecialchars($number['image']) ?>" alt="<?= htmlspecialchars($number['number']) ?>">
+                        <h3><?= htmlspecialchars($number['name']) ?></h3>
+                        <p><?= htmlspecialchars($number['description']) ?></p>
+                        <div class="service-icon"><ion-icon name="<?= $icon ?>"></ion-icon></div>
                     </div>
-                    <div class="service-back" style="background: #2196F3;">
-                        <h3>Le Un</h3>
-                        <p>Le chiffre de l'unicité et du commencement.</p>
+                    <div class="service-back" style="background: <?= $color ?>;">
+                        <h3>Le <?= htmlspecialchars($number['name']) ?></h3>
+                        <p><?= htmlspecialchars($number['description']) ?></p>
                     </div>
                 </div>
             </div>
-            
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #FF5722;">
-                        <img src="numbers/2.png" alt="2">
-                        <h3>Deux</h3>
-                        <p>La paire</p>
-                        <div class="service-icon"><ion-icon name="git-compare-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #FF5722;">
-                        <h3>Le Deux</h3>
-                        <p>Représente la dualité et les paires.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #9C27B0;">
-                        <img src="numbers/3.jpg" alt="3">
-                        <h3>Trois</h3>
-                        <p>La trinité</p>
-                        <div class="service-icon"><ion-icon name="triangle-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #9C27B0;">
-                        <h3>Le Trois</h3>
-                        <p>Chiffre magique dans de nombreuses cultures.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #FFC107;">
-                        <img src="numbers/4.png" alt="4">
-                        <h3>Quatre</h3>
-                        <p>Le carré</p>
-                        <div class="service-icon"><ion-icon name="square-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #FFC107;">
-                        <h3>Le Quatre</h3>
-                        <p>Représente la stabilité et l'équilibre.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #607D8B;">
-                        <img src="numbers/5.jpg" alt="5">
-                        <h3>Cinq</h3>
-                        <p>La main</p>
-                        <div class="service-icon"><ion-icon name="hand-left-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #607D8B;">
-                        <h3>Le Cinq</h3>
-                        <p>Correspond aux doigts d'une main.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #E91E63;">
-                        <img src="numbers/6.jpg" alt="6">
-                        <h3>Six</h3>
-                        <p>Le dés</p>
-                        <div class="service-icon"><ion-icon name="dice-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #E91E63;">
-                        <h3>Le Six</h3>
-                        <p>Face supérieure du dé classique.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #795548;">
-                        <img src="numbers/7.png" alt="7">
-                        <h3>Sept</h3>
-                        <p>Chiffre chanceux</p>
-                        <div class="service-icon"><ion-icon name="happy-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #795548;">
-                        <h3>Le Sept</h3>
-                        <p>Considéré comme un nombre porte-bonheur.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #3F51B5;">
-                        <img src="numbers/8.png" alt="8">
-                        <h3>Huit</h3>
-                        <p>L'infini</p>
-                        <div class="service-icon"><ion-icon name="infinite-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #3F51B5;">
-                        <h3>Le Huit</h3>
-                        <p>Symbolise l'infini couché.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="service">
-                <div class="service-inner">
-                    <div class="service-front" style="background: #009688;">
-                        <img src="numbers/9.jpg" alt="9">
-                        <h3>Neuf</h3>
-                        <p>Le dernier</p>
-                        <div class="service-icon"><ion-icon name="arrow-forward-outline"></ion-icon></div>
-                    </div>
-                    <div class="service-back" style="background: #009688;">
-                        <h3>Le Neuf</h3>
-                        <p>Dernier chiffre avant la dizaine.</p>
-                    </div>
-                </div>
-            </div>
+            <?php endwhile; ?>
         </div>
     </section>
 
-    <!-- Section Vidéos -->
+    <!-- Section Vidéos (peut être rendue dynamique aussi) -->
     <section class="features">
         <h2 class="nos-services">Vidéos Éducatives</h2>
         <div class="video-container">
@@ -217,20 +92,17 @@
         <h2 class="nos-services">Jeu des Chiffres</h2>
         <p class="game-instruction">Cliquez sur un chiffre pour entendre son nom !</p>
         <div class="game-container">
-            <button class="number-button" data-sound="sounds_numbers/0.mp3">0</button>
-            <button class="number-button" data-sound="sounds_numbers/1.mp3">1</button>
-            <button class="number-button" data-sound="sounds_numbers/2.mp3">2</button>
-            <button class="number-button" data-sound="sounds_numbers/3.mp3">3</button>
-            <button class="number-button" data-sound="sounds_numbers/4.mp3">4</button>
-            <button class="number-button" data-sound="sounds_numbers/5.mp3">5</button>
-            <button class="number-button" data-sound="sounds_numbers/6.mp3">6</button>
-            <button class="number-button" data-sound="sounds_numbers/7.mp3">7</button>
-            <button class="number-button" data-sound="sounds_numbers/8.mp3">8</button>
-            <button class="number-button" data-sound="sounds_numbers/9.mp3">9</button>
+            <?php
+            $numbers = $conn->query("SELECT number, sound FROM numbers ORDER BY number");
+            while($number = $numbers->fetch_assoc()):
+            ?>
+            <button class="number-button" data-sound="uploads/numbers/sounds/<?= htmlspecialchars($number['sound']) ?>">
+                <?= htmlspecialchars($number['number']) ?>
+            </button>
+            <?php endwhile; ?>
         </div>
     </section>
 
-    <!-- Footer identique à accueil.php -->
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
@@ -260,8 +132,8 @@
     </footer>
 
     <script>
-        // Script pour les bulles de la bannière
         document.addEventListener('DOMContentLoaded', function() {
+            // Bulles de la bannière
             const banner = document.querySelector('.banner-bubbles');
             for (let i = 0; i < 20; i++) {
                 const bubble = document.createElement('div');
@@ -274,15 +146,16 @@
                 banner.appendChild(bubble);
             }
 
-            // Script pour le jeu des chiffres
+            // Jeu des chiffres
             const numberButtons = document.querySelectorAll('.number-button');
             numberButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const soundFile = this.getAttribute('data-sound');
-                    const audio = new Audio(soundFile);
-                    audio.play();
+                    if (soundFile) {
+                        const audio = new Audio(soundFile);
+                        audio.play().catch(e => console.error("Erreur de lecture:", e));
+                    }
                     
-                    // Animation au clic
                     this.style.transform = 'scale(1.1)';
                     setTimeout(() => {
                         this.style.transform = 'scale(1)';
