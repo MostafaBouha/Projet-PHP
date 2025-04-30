@@ -115,11 +115,14 @@
             $hex_code = htmlspecialchars($color_data_game['hex_code']);
             $sound_path = htmlspecialchars($color_data_game['sound']);
             
+            // Chemin relatif depuis la racine du site
+            $sound_url = 'projet/uploads/colors/sounds/' . $sound_path;
+            
             echo '<button class="color-button" 
-                    data-sound="uploads/colors/sounds/'.$sound_path.'" 
-                    style="background:'.$hex_code.'">'
-                    .$color_name.
-                  '</button>';
+                    data-sound="' . $sound_url . '"
+                    style="background:' . $hex_code . '">
+                    ' . $color_name . '
+                  </button>';
         }
     } else {
         echo "<p>Aucune couleur avec son disponible.</p>";
@@ -164,26 +167,31 @@
     const colorButtons = document.querySelectorAll('.color-button');
     
     colorButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const soundPath = this.getAttribute('data-sound');
+        button.addEventListener('click', async function() {
+            const soundPath = button.getAttribute('data-sound');
+            const fullPath = window.location.origin + '/' + soundPath;
             
-            if (soundPath) {
-                // Crée un chemin absolu
-                const absolutePath = window.location.origin + '/' + soundPath;
-                const audio = new Audio(absolutePath);
+            try {
+                // Vérifie d'abord si le fichier existe
+                const response = await fetch(fullPath);
+                if (!response.ok) {
+                    throw new Error('Fichier non trouvé');
+                }
                 
-                audio.play().catch(error => {
-                    console.error("Erreur de lecture:", error);
-                    // Affiche un message d'erreur plus clair
-                    alert("Impossible de jouer le son. Vérifiez que le fichier existe bien à l'emplacement: " + absolutePath);
-                });
+                // Joue le son
+                const audio = new Audio(fullPath);
+                await audio.play();
+                
+                // Animation
+                button.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 200);
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert(`Erreur: ${error.message}\nChemin: ${fullPath}`);
             }
-
-            // Animation au clic
-            this.style.transform = 'scale(1.1)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 200);
         });
     });
 });
